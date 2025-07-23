@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import React, { useContext, useState } from 'react';
-import { Alert, SafeAreaView, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Linking, Modal, SafeAreaView, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { AppContext } from './context/AppContext';
 
 // Define color palettes for both themes
@@ -16,8 +16,13 @@ const Colors = {
         switchTrackFalse: '#767577',
         switchTrackTrue: '#81b0ff',
         sectionTitle: '#666',
-        logoutText: '#ff4d4f', // New color for logout text
-        logoutBorder: '#ff4d4f', // New color for logout border
+        logoutText: '#ff4d4f',
+        logoutBorder: '#ff4d4f',
+        modalBg: 'rgba(0, 0, 0, 0.5)',
+        modalView: '#fff',
+        modalInput: '#ddd',
+        placeholder: '#888',
+        cancelButton: '#6c757d',
     },
     dark: {
         background: '#000',
@@ -30,8 +35,13 @@ const Colors = {
         switchTrackFalse: '#3a3a3c',
         switchTrackTrue: '#0A84FF',
         sectionTitle: '#a0a0a0',
-        logoutText: '#ff6961', // New color for logout text
-        logoutBorder: '#ff6961', // New color for logout border
+        logoutText: '#ff6961',
+        logoutBorder: '#ff6961',
+        modalBg: 'rgba(0, 0, 0, 0.7)',
+        modalView: '#2c2c2e',
+        modalInput: '#545458',
+        placeholder: '#6e6e72',
+        cancelButton: '#545458',
     },
 };
 
@@ -43,6 +53,8 @@ export default function SettingsScreen() {
     const context = useContext(AppContext);
 
     const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+    const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
+    const [feedbackText, setFeedbackText] = useState('');
 
     if (!context) {
         return <Text>Loading...</Text>;
@@ -52,8 +64,33 @@ export default function SettingsScreen() {
     const theme = Colors[colorScheme];
     const styles = dynamicStyles(theme);
 
-    const handlePressOption = (optionName: string) => {
-        Alert.alert('Placeholder', `This is where the "${optionName}" feature will go.`);
+    const handleHelpPress = async () => {
+        const email = 'ritarshiroy@gmail.com';
+        const url = `mailto:${email}?subject=UniBuddy App Help & Support`;
+        const supported = await Linking.canOpenURL(url);
+
+        if (supported) {
+            await Linking.openURL(url);
+        } else {
+            Alert.alert('Cannot open Email', `Please send your support request to ${email}.`);
+        }
+    };
+
+    const handleSendFeedback = () => {
+        if (!feedbackText.trim()) {
+            Alert.alert('Empty Feedback', 'Please enter your feedback before submitting.');
+            return;
+        }
+
+        // In a real app, you would send this to a server.
+        // We will simulate this by logging it.
+        console.log('--- Feedback Submitted ---');
+        console.log(feedbackText);
+        console.log('--------------------------');
+
+        setFeedbackModalVisible(false);
+        setFeedbackText('');
+        Alert.alert('Thank You!', 'Your feedback has been sent.');
     };
 
     return (
@@ -85,18 +122,56 @@ export default function SettingsScreen() {
                     <Text style={styles.optionText}>Appearance</Text>
                 </TouchableOpacity>
 
-                <Text style={styles.sectionTitle}>About</Text>
-                <TouchableOpacity style={styles.option} onPress={() => handlePressOption('About UniBuddy')}>
-                    <Text style={styles.optionText}>About UniBuddy</Text>
+                <Text style={styles.sectionTitle}>Support</Text>
+                <TouchableOpacity style={styles.option} onPress={handleHelpPress}>
+                    <Text style={styles.optionText}>Help & Support</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.option} onPress={() => setFeedbackModalVisible(true)}>
+                    <Text style={styles.optionText}>Send Feedback</Text>
                 </TouchableOpacity>
             </ScrollView>
 
-            {/* --- UPDATED LOGOUT BUTTON --- */}
             <View style={styles.footer}>
                 <TouchableOpacity style={styles.logoutButton} onPress={() => router.replace('/login')}>
                     <Text style={styles.logoutButtonText}>Logout</Text>
                 </TouchableOpacity>
             </View>
+
+            {/* --- NEW FEEDBACK MODAL --- */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={feedbackModalVisible}
+                onRequestClose={() => setFeedbackModalVisible(false)}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalTitle}>Send Us Your Feedback</Text>
+                        <TextInput
+                            style={styles.modalInput}
+                            placeholder="Tell us what you think..."
+                            placeholderTextColor={theme.placeholder}
+                            value={feedbackText}
+                            onChangeText={setFeedbackText}
+                            multiline={true}
+                        />
+                        <View style={styles.modalButtonContainer}>
+                            <TouchableOpacity
+                                style={[styles.modalButton, styles.cancelButton]}
+                                onPress={() => setFeedbackModalVisible(false)}
+                            >
+                                <Text style={styles.modalButtonText}>Cancel</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.modalButton, styles.saveButton]}
+                                onPress={handleSendFeedback}
+                            >
+                                <Text style={styles.modalButtonText}>Submit</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 }
@@ -151,6 +226,66 @@ const dynamicStyles = (theme: Theme) => StyleSheet.create({
     logoutButtonText: {
         color: theme.logoutText,
         fontSize: 18,
+        fontWeight: 'bold',
+    },
+    // Modal Styles
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: theme.modalBg,
+    },
+    modalView: {
+        width: '90%',
+        backgroundColor: theme.modalView,
+        borderRadius: 20,
+        padding: 25,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        color: theme.text,
+    },
+    modalInput: {
+        width: '100%',
+        height: 120,
+        backgroundColor: theme.background,
+        borderColor: theme.modalInput,
+        borderWidth: 1,
+        borderRadius: 10,
+        paddingHorizontal: 15,
+        paddingTop: 15,
+        marginBottom: 20,
+        color: theme.text,
+        textAlignVertical: 'top',
+    },
+    modalButtonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    modalButton: {
+        borderRadius: 10,
+        padding: 12,
+        elevation: 2,
+        width: '48%',
+        alignItems: 'center',
+    },
+    cancelButton: {
+        backgroundColor: theme.cancelButton,
+    },
+    saveButton: {
+        backgroundColor: theme.primary,
+    },
+    modalButtonText: {
+        color: 'white',
         fontWeight: 'bold',
     },
 });

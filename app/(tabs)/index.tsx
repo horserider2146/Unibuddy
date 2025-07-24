@@ -9,7 +9,6 @@ const Colors = {
         background: '#f0f2f5',
         text: '#1c1c1e',
         buttonBg: '#007BFF',
-        buttonText: '#fff',
         cardBg: '#fff',
         cardSubtleText: '#666',
         primary: '#007BFF',
@@ -19,7 +18,6 @@ const Colors = {
         background: '#000',
         text: '#fff',
         buttonBg: '#0A84FF',
-        buttonText: '#fff',
         cardBg: '#1c1c1e',
         cardSubtleText: '#a0a0a0',
         primary: '#0A84FF',
@@ -68,6 +66,11 @@ export default function DashboardScreen() {
                 <TouchableOpacity style={styles.button} onPress={() => router.push('/streaks')}>
                     <Text style={styles.buttonText}>Streak Performance</Text>
                 </TouchableOpacity>
+
+                {/* --- NEW FORUM BUTTON --- */}
+                <TouchableOpacity style={styles.button} onPress={() => router.push('/forum')}>
+                    <Text style={styles.buttonText}>Public Forum</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );
@@ -96,7 +99,7 @@ const dynamicStyles = (theme: Theme) => StyleSheet.create({
         fontSize: 36,
         fontWeight: 'bold',
         color: theme.cardSubtleText,
-        lineHeight: 28, // Helps with vertical alignment
+        lineHeight: 28,
     },
     content: {
         flex: 1,

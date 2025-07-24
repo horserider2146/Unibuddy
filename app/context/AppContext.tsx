@@ -10,6 +10,12 @@ interface Reminder {
   date: string;
 }
 
+// This represents the currently logged-in user
+export interface User {
+    uid: string;
+    name: string;
+}
+
 // Define the shape of our context
 interface AppContextType {
   items: Items;
@@ -28,6 +34,8 @@ interface AppContextType {
   setColorScheme: (scheme: 'light' | 'dark') => void;
   reminders: Reminder[];
   setReminders: React.Dispatch<React.SetStateAction<Reminder[]>>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -43,6 +51,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [year, setYear] = useState('III');
   const [colorScheme, _setColorScheme] = useState<'light' | 'dark'>(systemTheme ?? 'light');
   const [reminders, setReminders] = useState<Reminder[]>([]);
+  
+  // --- FIX IS HERE ---
+  // We initialize the user with a default value based on the profile name.
+  // This ensures the user is never null after the app loads.
+  const [user, setUser] = useState<User | null>({
+      uid: 'default-user-id-12345', // A consistent placeholder ID
+      name: name, // Use the name from the profile state
+  });
 
   const setColorScheme = (scheme: 'light' | 'dark') => {
     _setColorScheme(scheme);
@@ -57,7 +73,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         branch, setBranch, 
         year, setYear, 
         colorScheme, setColorScheme,
-        reminders, setReminders
+        reminders, setReminders,
+        user, setUser
     }}>
       {children}
     </AppContext.Provider>

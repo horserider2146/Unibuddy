@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 // IMPORTANT: Replace these with your actual Firebase project credentials
 // You can find these in your Firebase project settings under "General" -> "Your apps" -> "SDK setup and configuration"
 const firebaseConfig = {
-  apiKey: "AIzaSyAFQmSFFyRFnhf1TMLy3CQ1vV7BvWNrzEo",
+  apiKey: "AIzaSyCRSpqi8JR93sZZbk4jKAaRNoGlFd4yeVQ",
   authDomain: "unibuddy-97489.firebaseapp.com",
   projectId: "unibuddy-97489",
   storageBucket: "unibuddy-97489.firebasestorage.app",

@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import React, { useContext, useState } from 'react';
 import { Alert, Linking, Modal, SafeAreaView, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { AppContext } from './context/AppContext';
+import { AppContext } from '../context/AppContext';
 
 // Define color palettes for both themes
 const Colors = {

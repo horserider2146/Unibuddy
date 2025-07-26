@@ -2,7 +2,7 @@ import { differenceInCalendarDays, format, parseISO, subDays } from 'date-fns';
 import { useRouter } from 'expo-router';
 import React, { useContext, useMemo } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { AppContext } from './context/AppContext';
+import { AppContext } from '../context/AppContext';
 
 // Define color palettes for both themes
 const Colors = {

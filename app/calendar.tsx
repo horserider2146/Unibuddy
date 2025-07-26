@@ -1,18 +1,18 @@
 import { useRouter } from 'expo-router';
 import React, { useContext, useState } from 'react';
 import {
-  Alert,
-  FlatList,
-  Modal,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Alert,
+    FlatList,
+    Modal,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import { AppContext } from './context/AppContext';
+import { AppContext } from '../context/AppContext';
 
 // Define color palettes for both themes
 const Colors = {

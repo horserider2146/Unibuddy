@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { MultiSelect } from 'react-native-element-dropdown';
 import RNPickerSelect from 'react-native-picker-select';
-import { AppContext } from './context/AppContext';
+import { AppContext } from '../context/AppContext';
 
 // Define color palettes for both themes
 const Colors = {

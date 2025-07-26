@@ -1,7 +1,7 @@
 // In app/_layout.tsx
 
 import { Stack } from 'expo-router';
-import { AppProvider } from './context/AppContext';
+import { AppProvider } from '../context/AppContext';
 
 export default function RootLayout() {
   return (

@@ -2,8 +2,8 @@ import { useRouter } from 'expo-router';
 import { addDoc, collection, getFirestore, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlatList, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { AppContext, User } from '../context/AppContext';
 import { app } from '../firebaseConfig'; // We will create this file next
-import { AppContext, User } from './context/AppContext';
 
 // Define color palettes for both themes
 const Colors = {
